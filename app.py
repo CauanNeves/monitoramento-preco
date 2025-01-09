@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.select import Select
 from time import sleep
 import os
 
@@ -32,6 +31,17 @@ def wait_for_element(driver, by, value, timeout=60):
         EC.presence_of_element_located((by, value))
     )
 
+
+def formatted_price(price):
+    price_before = price.replace('R$', '').strip()
+    price_before = price_before.replace(',', '.')
+    
+    price_clean = float(price_before)
+    
+    if price_clean.is_integer():
+        return int(price_clean)
+    else:
+        return price_clean
 #Função principal
 def main():
     driver = start_driver()
@@ -47,8 +57,10 @@ return document.evaluate(
     ).singleNodeValue;
                                     ''')
     driver.execute_script('arguments[0].scrollIntoView({behavior: "instant", block: "center"});', price_in_cash)
-    price_text = driver.execute_script('return arguments[0].innerText;', price_in_cash)
-    print(f'Preço à vista: {price_text}')
+    price_in_cash = driver.execute_script('return arguments[0].innerText;', price_in_cash)
+    price_full = driver.find_element(By.XPATH, '(//span[@id="valParc"])[2]').text
+    
+    print(f'Preço à vista: {formatted_price(price_in_cash)};\nPreço cheio: {formatted_price(price_full)}')
     
 if __name__ == '__main__':
     main()
