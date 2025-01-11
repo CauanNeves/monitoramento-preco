@@ -3,11 +3,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from time import sleep
-import os
-import pandas as pd
-from openpyxl import load_workbook
 from datetime import datetime as dt
+from openpyxl import load_workbook
+from time import sleep
+import pandas as pd
+import schedule
+import os
 
 # Funções do Webdriver
 def start_driver():
@@ -99,5 +100,10 @@ return document.evaluate(
         print('Arquivo Excel criado com sucesso!')
 
 
-if __name__ == '__main__':
-    main()
+schedule.every(1).day.do(main)
+
+print(f'Próxima verificação irá ocorrer às: {schedule.next_run()}')
+
+while True:
+    schedule.run_pending()
+    sleep(1)
