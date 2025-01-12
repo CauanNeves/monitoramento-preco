@@ -13,13 +13,12 @@ import os
 # Funções do Webdriver
 def start_driver():
     chrome_options = Options()
-    arguments = ['--lang=pt-BR', '--start-maximized', '--incognito']
+    arguments = ['--lang=pt-BR', '--start-maximized']
 
     for argument in arguments:
         chrome_options.add_argument(argument)
 
     chrome_options.add_experimental_option('prefs', {
-        'download.default_directory': 'C:\\Users\\secretario',
         'download.directory_upgrade': True,
         'download.prompt_for_download': False,
         'profile.default_content_setting_values.notifications': 2,
@@ -103,6 +102,8 @@ return document.evaluate(
 schedule.every(1).day.do(main)
 
 print(f'Próxima verificação irá ocorrer às: {schedule.next_run()}')
+
+main()
 
 while True:
     schedule.run_pending()
