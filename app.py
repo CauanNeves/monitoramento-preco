@@ -13,7 +13,7 @@ import os
 # Funções do Webdriver
 def start_driver():
     chrome_options = Options()
-    arguments = ['--lang=pt-BR', '--start-maximized']
+    arguments = ['--lang=pt-BR', '--start-maximized', 'incognito']
 
     for argument in arguments:
         chrome_options.add_argument(argument)
